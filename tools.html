@@ -10,16 +10,23 @@
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="page-ready">
 
 <header class="site-header">
   <div class="container">
-    <a href="index.html" class="wordmark">Heal the <em>Workplace</em></a>
+    <a href="index.html" class="wordmark">Heal the Workplace</a>
     <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false"><span></span></button>
     <nav class="nav-links">
-      <a href="#renew">RENEW</a>
-      <a href="#burnout-tools">Tools</a>
-      <a href="#sketchnotes">Sketchnotes</a>
+      <a href="index.html#book">The Book</a>
+      <a href="index.html#author">Author</a>
+      <div class="nav-dropdown">
+        <a href="tools.html" class="nav-dropdown-toggle">Tools</a>
+        <div class="nav-dropdown-menu" aria-label="Tools quick links">
+          <a href="#renew">Renew</a>
+          <a href="#burnout-tools">Tools</a>
+          <a href="#sketchnotes">Sketchnotes</a>
+        </div>
+      </div>
       <a href="index.html#order" class="btn btn-primary nav-cta">Order the book</a>
     </nav>
   </div>
@@ -105,57 +112,54 @@
   </section>
 
   <!-- BURNOUT DIAGNOSTICS -->
-  <!-- BURNOUT + CULTURE TOOLS WITH SIDE NAV -->
-  <div class="tools-layout">
-    <aside class="tools-nav" id="tools-nav" aria-label="Tools navigation">
-      <div class="nav-brand">Tools</div>
-      <nav class="nav-list">
-        <a class="nav-link" href="#burnout-tools">Burnout risk diagnostics</a>
-        <nav class="nav-sub">
-          <a class="nav-link" href="#burnout-org">Organization</a>
-          <a class="nav-link" href="#burnout-manager">Manager / Team</a>
-          <a class="nav-link" href="#burnout-individual">Individual</a>
+  <section id="burnout-tools" class="assessment-panel">
+    <div class="container assessment-layout">
+      <aside class="tools-nav" aria-label="Burnout risk diagnostics navigation">
+        <div class="nav-brand">Burnout risk diagnostics</div>
+        <nav class="nav-list">
+          <nav class="nav-sub">
+            <a class="nav-link" href="#org-burnout">Organization</a>
+            <a class="nav-link" href="#team-burnout">Manager / Team</a>
+            <a class="nav-link" href="#individual-burnout">Individual</a>
+          </nav>
         </nav>
-        <a class="nav-link" href="#culture-tools">Culture health checks</a>
-        <nav class="nav-sub">
-          <a class="nav-link" href="#culture-org">Organization</a>
-          <a class="nav-link" href="#culture-team">Team</a>
-          <a class="nav-link" href="#culture-individual">Individual</a>
-        </nav>
-      </nav>
-    </aside>
+      </aside>
 
-    <div class="tools-content">
-      <section id="burnout-tools">
-        <div class="container">
-          <div class="section-head">
-            <span class="eyebrow">Burnout risk diagnostics</span>
-            <h2>Three assessments, three vantage points</h2>
-            <p class="body-copy">From the perspective of the organization, the manager or team, and the individual. These are reflective workplace tools, not clinical or medical diagnoses.</p>
-          </div>
-          <div id="burnout-org" class="assess-anchor"><h3>Organization assessment</h3></div>
-          <div id="burnout-manager" class="assess-anchor"><h3>Manager / Team assessment</h3></div>
-          <div id="burnout-individual" class="assess-anchor"><h3>Individual assessment</h3></div>
-          <div class="assess-group" data-assess-group="burnout"></div>
+      <div class="tools-content">
+        <div id="brd" class="section-head">
+          <span class="eyebrow">Burnout risk diagnostics</span>
+          <h2>Three assessments, three vantage points</h2>
+          <p class="body-copy">From the perspective of the organization, the manager or team, and the individual. These are reflective workplace tools, not clinical or medical diagnoses.</p>
         </div>
-      </section>
-
-      <!-- CULTURE HEALTH CHECKS -->
-      <section class="wash" id="culture-tools">
-        <div class="container">
-          <div class="section-head">
-            <span class="eyebrow">Organizational culture health checks</span>
-            <h2>Surface the patterns before they harden</h2>
-            <p class="body-copy">Three assessments examine culture at the organizational, team, and individual levels. These are reflective workplace tools, not clinical or medical diagnoses.</p>
-          </div>
-          <div id="culture-org" class="assess-anchor"><h3>Organization</h3></div>
-          <div id="culture-team" class="assess-anchor"><h3>Team</h3></div>
-          <div id="culture-individual" class="assess-anchor"><h3>Individual</h3></div>
-          <div class="assess-group" data-assess-group="culture"></div>
-        </div>
-      </section>
+        <div class="assess-group" data-assess-group="burnout"></div>
+      </div>
     </div>
-  </div>
+  </section>
+
+  <!-- CULTURE HEALTH CHECKS -->
+  <section class="wash assessment-panel" id="culture-tools">
+    <div class="container assessment-layout">
+      <aside class="tools-nav" aria-label="Organizational culture health checks navigation">
+        <div class="nav-brand">Culture health checks</div>
+        <nav class="nav-list">
+          <nav class="nav-sub">
+            <a class="nav-link" href="#org-culture">Organization</a>
+            <a class="nav-link" href="#team-culture">Team</a>
+            <a class="nav-link" href="#individual-culture">Individual</a>
+          </nav>
+        </nav>
+      </aside>
+
+      <div class="tools-content">
+        <div id="chc" class="section-head">
+          <span class="eyebrow">Organizational culture health checks</span>
+          <h2>Surface the patterns before they harden</h2>
+          <p class="body-copy">Three assessments examine culture at the organizational, team, and individual levels. These are reflective workplace tools, not clinical or medical diagnoses.</p>
+        </div>
+        <div class="assess-group" data-assess-group="culture"></div>
+      </div>
+    </div>
+  </section>
 
   <!-- SKETCHNOTES -->
   <section id="sketchnotes">

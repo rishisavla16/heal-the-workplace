@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="page-ready">
 
 <header class="site-header">
   <div class="container">
@@ -19,7 +19,14 @@
     <nav class="nav-links">
       <a href="#book">The Book</a>
       <a href="#author">Author</a>
-      <a href="tools.html">Tools</a>
+      <div class="nav-dropdown">
+        <a href="tools.html" class="nav-dropdown-toggle">Tools</a>
+        <div class="nav-dropdown-menu" aria-label="Tools quick links">
+          <a href="tools.html#renew">Renew</a>
+          <a href="tools.html#burnout-tools">Tools</a>
+          <a href="tools.html#sketchnotes">Sketchnotes</a>
+        </div>
+      </div>
       <a href="#order" class="btn btn-primary nav-cta">Order the book</a>
     </nav>
   </div>

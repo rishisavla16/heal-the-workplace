@@ -21,6 +21,28 @@
     );
   }
 
+  /* ---------- Page transitions for shared navbar ---------- */
+  document.querySelectorAll('a[href]').forEach((link) => {
+    const href = link.getAttribute('href');
+    if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+    if (link.closest('.nav-links') || link.closest('.nav-dropdown-menu')) {
+      link.addEventListener('click', (event) => {
+        const url = new URL(link.href, window.location.href);
+        const samePage = url.pathname === window.location.pathname && url.search === window.location.search;
+        if (!samePage) {
+          event.preventDefault();
+          document.body.classList.add('page-leaving');
+          setTimeout(() => { window.location.href = link.href; }, 220);
+        }
+      });
+    }
+  });
+
+  window.addEventListener('pageshow', () => {
+    document.body.classList.remove('page-leaving');
+    requestAnimationFrame(() => document.body.classList.remove('page-ready'));
+  });
+
   /* ---------- Copy page link ---------- */
   const copyBtn = document.querySelector('.copy-link-btn');
   if (copyBtn) {
@@ -65,28 +87,76 @@
 
   if (legendButtons.length) activateStage(legendButtons[0].dataset.stage);
   
-  /* ---------- Tools page scrollspy ---------- */
-  const toolsNav = document.querySelector('.tools-nav');
-  if (toolsNav) {
-    const links = Array.from(toolsNav.querySelectorAll('.nav-link'))
-      .filter(l => l.getAttribute('href') && l.getAttribute('href').startsWith('#'));
-    const observers = [];
-    const setActive = (id) => {
-      links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
-    };
-  
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          setActive(entry.target.id);
-        }
+  /* ---------- Tools page scrollspy (fallback: position-based) ---------- */
+  const toolsNavs = document.querySelectorAll('.tools-nav');
+  if (toolsNavs.length) {
+    const header = document.querySelector('.site-header');
+    const headerOffset = header ? header.offsetHeight + 8 : 88;
+
+    toolsNavs.forEach((toolsNav) => {
+      const links = Array.from(toolsNav.querySelectorAll('.nav-link'))
+        .filter((l) => l.getAttribute('href') && l.getAttribute('href').startsWith('#'));
+
+      function getTargets() {
+        return links.map((l) => {
+          const id = l.getAttribute('href').slice(1);
+          return { id, link: l, el: document.getElementById(id) };
+        }).filter((t) => t.el);
+      }
+
+      function setActiveLink(id) {
+        links.forEach((l) => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+      }
+
+      links.forEach((link) => {
+        link.addEventListener('click', (event) => {
+          const id = link.getAttribute('href').slice(1);
+          const target = document.getElementById(id);
+          if (!target) return;
+          event.preventDefault();
+          setActiveLink(id);
+          const navHeight = toolsNav.getBoundingClientRect().height;
+          const offset = headerOffset + navHeight + 16;
+          const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+          window.scrollTo({ top, behavior: 'smooth' });
+          history.replaceState(null, '', '#' + id);
+        });
       });
-    }, { root: null, rootMargin: '0px 0px -60% 0px', threshold: 0 });
-  
-    links.forEach(link => {
-      const targetId = link.getAttribute('href').slice(1);
-      const target = document.getElementById(targetId);
-      if (target) io.observe(target);
+
+      function updateActive() {
+        const targets = getTargets();
+        let below = [];
+        let above = [];
+        targets.forEach((t) => {
+          const rect = t.el.getBoundingClientRect();
+          const distance = rect.top - headerOffset;
+          if (distance >= 0) below.push({ t, distance });
+          else above.push({ t, distance });
+        });
+
+        let chosen = null;
+        if (below.length) {
+          below.sort((a, b) => a.distance - b.distance);
+          chosen = below[0].t;
+        } else if (above.length) {
+          above.sort((a, b) => b.distance - a.distance);
+          chosen = above[0].t;
+        }
+
+        if (chosen) setActiveLink(chosen.id);
+      }
+
+      let ticking = false;
+      const onScroll = () => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => { updateActive(); ticking = false; });
+          ticking = true;
+        }
+      };
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      updateActive();
     });
   }
 })();
