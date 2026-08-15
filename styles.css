@@ -382,10 +382,10 @@ hr.rule{
 }
 .nav-dropdown-toggle:hover{ color: var(--ink); }
 .nav-dropdown-toggle::after{
-  content: '';
+  content: '↓';
   font-size: 0.78em;
   line-height: 1;
-  transform: translateY(-1px);
+  /* transform: translateY(-1px); */
   transition: transform .2s var(--ease), color .2s var(--ease);
 }
 
