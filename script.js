@@ -108,6 +108,16 @@
         links.forEach((l) => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
       }
 
+      function getScrollOffset() {
+        // On desktop the sidebar sits beside the cards, so only the header
+        // obscures the target. On mobile, the full-width sticky nav also
+        // sits above the cards.
+        const navOffset = window.matchMedia('(max-width: 900px)').matches
+          ? toolsNav.getBoundingClientRect().height + 16
+          : 0;
+        return headerOffset + navOffset;
+      }
+
       links.forEach((link) => {
         link.addEventListener('click', (event) => {
           const id = link.getAttribute('href').slice(1);
@@ -115,8 +125,11 @@
           if (!target) return;
           event.preventDefault();
           setActiveLink(id);
-          const navHeight = toolsNav.getBoundingClientRect().height;
-          const offset = headerOffset + navHeight + 16;
+          getTargets().forEach((item) => {
+            if (item.el !== target) item.el.open = false;
+          });
+          target.open = true;
+          const offset = getScrollOffset();
           const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
           window.scrollTo({ top, behavior: 'smooth' });
           history.replaceState(null, '', '#' + id);
@@ -125,22 +138,23 @@
 
       function updateActive() {
         const targets = getTargets();
+        const offset = getScrollOffset();
         let below = [];
         let above = [];
         targets.forEach((t) => {
           const rect = t.el.getBoundingClientRect();
-          const distance = rect.top - headerOffset;
+          const distance = rect.top - offset;
           if (distance >= 0) below.push({ t, distance });
           else above.push({ t, distance });
         });
 
         let chosen = null;
-        if (below.length) {
-          below.sort((a, b) => a.distance - b.distance);
-          chosen = below[0].t;
-        } else if (above.length) {
+        if (above.length) {
           above.sort((a, b) => b.distance - a.distance);
           chosen = above[0].t;
+        } else if (below.length) {
+          below.sort((a, b) => a.distance - b.distance);
+          chosen = below[0].t;
         }
 
         if (chosen) setActiveLink(chosen.id);
@@ -156,6 +170,7 @@
 
       window.addEventListener('scroll', onScroll, { passive: true });
       window.addEventListener('resize', onScroll);
+      window.addEventListener('load', updateActive, { once: true });
       updateActive();
     });
   }
