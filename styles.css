@@ -54,14 +54,18 @@
   box-sizing: border-box;
 }
 
+html, body {
+  overflow-x: hidden;
+}
+
 html {
-  scroll-behavior: smooth;
   scroll-padding-top: 80px;
 }
 
 
 body {
   margin: 0;
+  padding-top: 80px; /* Offset for fixed header */
   background: var(--paper);
   color: var(--ink);
   font-family: var(--sans);
@@ -71,18 +75,15 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   opacity: 1;
-  transform: translateY(0);
-  transition: opacity .28s var(--ease), transform .28s var(--ease);
+  transition: opacity .28s var(--ease);
 }
 
 body.page-ready {
   opacity: 0;
-  transform: translateY(8px);
 }
 
 body.page-leaving {
   opacity: 0;
-  transform: translateY(-6px);
 }
 
 img {
@@ -331,7 +332,19 @@ hr.rule {
 }
 
 .btn-primary:hover {
-  background: var(--teal-900);
+  background: var(--teal-500);
+}
+
+.btn-secondary {
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  
+}
+
+.btn-secondary:hover {
+  background: var(--teal-100);
+  color: var(--teal-500);
 }
 
 .btn-ghost {
@@ -373,8 +386,10 @@ hr.rule {
    HEADER
    ========================================================= */
 .site-header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  width: 100%;
   z-index: 100;
   background: var(--paper);
   backdrop-filter: blur(10px) saturate(1.1);
@@ -1191,7 +1206,7 @@ hr.rule {
 .footer-top {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   flex-wrap: wrap;
   gap: 40px;
   /* padding-bottom: 44px; */
@@ -1206,6 +1221,8 @@ hr.rule {
 
 .footer-links {
   display: flex;
+  justify-content: space-between;
+  width: 100%;
   gap: 40px;
   flex-wrap: wrap;
 }
@@ -1254,6 +1271,13 @@ hr.rule {
 
 .tools-hero .body-copy {
   font-size: 1.08rem;
+}
+
+.tool-btn {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  margin-top: 32px;
 }
 
 /* ---------- RENEW diagram ---------- */
@@ -1946,6 +1970,11 @@ section {
   }
 .sketch-grid {
     grid-template-columns: 1fr;
+  }
+  .footer-links {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
   }
 }
 
