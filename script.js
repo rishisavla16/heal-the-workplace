@@ -67,8 +67,8 @@
     legendButtons.forEach((b) => b.classList.toggle('is-active', b.dataset.stage === key));
     nodes.forEach((n) => n.classList.toggle('is-active', n.dataset.stage === key));
     const source = document.querySelector(`.renew-legend button[data-stage="${key}"]`);
-    if (source && rcWord && rcDetail) {
-      rcWord.textContent = source.dataset.letter;
+    if (source && rcDetail) {
+      if (rcWord) rcWord.textContent = source.dataset.letter;
       rcDetail.textContent = source.dataset.detail;
     }
     document.querySelectorAll('.renew-node circle.node-bg').forEach((c) => {
@@ -83,7 +83,9 @@
 
   legendButtons.forEach((b) => b.addEventListener('mouseenter', () => activateStage(b.dataset.stage)));
   legendButtons.forEach((b) => b.addEventListener('focus', () => activateStage(b.dataset.stage)));
+  legendButtons.forEach((b) => b.addEventListener('click', () => activateStage(b.dataset.stage)));
   nodes.forEach((n) => n.addEventListener('mouseenter', () => activateStage(n.dataset.stage)));
+  nodes.forEach((n) => n.addEventListener('click', () => activateStage(n.dataset.stage)));
 
   if (legendButtons.length) activateStage(legendButtons[0].dataset.stage);
   

@@ -1363,7 +1363,10 @@ hr.rule {
 
 .renew-center {
   position: absolute;
-  inset: 30%;
+  top: 50%;
+  left: 50%;
+  width: 42%;
+  transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1372,19 +1375,12 @@ hr.rule {
   pointer-events: none;
 }
 
-.renew-center .rc-word {
-  font-family: var(--serif);
-  font-size: 1.5rem;
-  color: var(--ink);
-  line-height: 1;
-}
-
 .renew-center .rc-detail {
-  margin-top: 10px;
+  margin-top: 0;
   font-size: 1rem;
   color: var(--ink-soft);
   max-width: 22ch;
-  line-height: 1.4;
+  line-height: 1.2;
 }
 
 
@@ -1976,6 +1972,9 @@ section {
     align-items: center;
     gap: 8px;
   }
+  .tool-btn {
+  flex-direction: column;
+}
 }
 
 
