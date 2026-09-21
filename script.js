@@ -21,21 +21,29 @@
     );
   }
 
-  /* ---------- Page transitions for shared navbar ---------- */
-  document.querySelectorAll('a[href]').forEach((link) => {
-    const href = link.getAttribute('href');
-    if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
-    if (link.closest('.nav-links') || link.closest('.nav-dropdown-menu')) {
-      link.addEventListener('click', (event) => {
-        const url = new URL(link.href, window.location.href);
-        const samePage = url.pathname === window.location.pathname && url.search === window.location.search;
-        if (!samePage) {
-          event.preventDefault();
-          document.body.classList.add('page-leaving');
-          setTimeout(() => { window.location.href = link.href; }, 220);
-        }
-      });
-    }
+  /* ---------- Same-page header navigation ---------- */
+  document.querySelectorAll('.site-header a[href]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      const url = new URL(link.href, window.location.href);
+      const samePage = url.pathname === window.location.pathname && url.search === window.location.search;
+      if (!samePage) return;
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      const target = url.hash ? document.querySelector(url.hash) : null;
+      const scrollPosition = target || 0;
+
+      if (window.siteLenis) {
+        window.siteLenis.scrollTo(scrollPosition, {
+          offset: target ? -80 : 0,
+          duration: 1.2
+        });
+      } else {
+        window.scrollTo({ top: target ? target.offsetTop - 80 : 0, behavior: 'smooth' });
+      }
+
+      history.replaceState(null, '', url.hash || window.location.pathname);
+    });
   });
 
   window.addEventListener('pageshow', () => {
@@ -189,6 +197,7 @@
       smooth: true,
       smoothTouch: false
     });
+    window.siteLenis = lenis;
 
     function raf(time) {
       lenis.raf(time);
@@ -204,7 +213,7 @@
         const targetElement = document.querySelector(targetId);
         if (targetElement) {
           e.preventDefault();
-          lenis.scrollTo(targetElement, { offset: -80 });
+          lenis.scrollTo(targetElement, { offset: -80, duration: 1.2 });
         }
       });
     });

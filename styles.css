@@ -1,3 +1,29 @@
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(site-header),
+::view-transition-new(site-header) {
+  animation: none;
+}
+
+::view-transition-old(page-content) {
+  animation: page-content-out 180ms ease both;
+}
+
+::view-transition-new(page-content) {
+  animation: page-content-in 280ms cubic-bezier(.22, .61, .36, 1) both;
+}
+
+@keyframes page-content-out {
+  to { opacity: 0; transform: translateY(-8px); }
+}
+
+@keyframes page-content-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* =========================================================
    HEAL THE WORKPLACE — Design system
   One colour family (deep teal / sage / paper), two typefaces:
@@ -55,7 +81,7 @@
 }
 
 html, body {
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 html {
@@ -74,6 +100,7 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  view-transition-name: none;
   opacity: 1;
   transition: opacity .28s var(--ease);
 }
@@ -310,6 +337,7 @@ hr.rule {
 .btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   font-family: var(--sans);
   font-weight: 600;
@@ -395,6 +423,11 @@ hr.rule {
   backdrop-filter: blur(10px) saturate(1.1);
   -webkit-backdrop-filter: blur(10px) saturate(1.1);
   border-bottom: 1px solid var(--line-soft);
+  view-transition-name: site-header;
+}
+
+main {
+  view-transition-name: page-content;
 }
 
 .site-header .container {
@@ -1798,10 +1831,12 @@ html {
 
   .tools-nav {
     position: sticky;
-    top: 78px;
+    top: 80px;
+    align-self: start;
+    height: fit-content;
     z-index: 25;
     padding: 10px 0 12px;
-    background: linear-gradient(to bottom, var(--paper) 68%, rgba(250, 247, 240, 0));
+    background: var(--paper);
     backdrop-filter: blur(8px);
   }
 
