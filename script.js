@@ -134,15 +134,19 @@
           const target = document.getElementById(id);
           if (!target) return;
           event.preventDefault();
+          event.stopImmediatePropagation();
           setActiveLink(id);
-          getTargets().forEach((item) => {
-            if (item.el !== target) item.el.open = false;
-          });
-          target.open = true;
-          const offset = getScrollOffset();
-          const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
-          window.scrollTo({ top, behavior: 'smooth' });
           history.replaceState(null, '', '#' + id);
+
+          requestAnimationFrame(() => {
+            const offset = getScrollOffset();
+            if (window.siteLenis) {
+              window.siteLenis.scrollTo(target, { offset: -offset, duration: 1.2 });
+            } else {
+              const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+              window.scrollTo({ top, behavior: 'smooth' });
+            }
+          });
         });
       });
 
